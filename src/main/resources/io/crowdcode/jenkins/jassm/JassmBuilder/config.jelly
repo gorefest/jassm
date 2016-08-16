@@ -1,0 +1,31 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!--
+    This jelly script is used for per-project configuration.
+
+    See global.jelly for a general discussion about jelly script.
+  -->
+
+  <!--
+    Creates a text field that shows the value of the "name" property.
+    When submitted, it will be passed to the corresponding constructor parameter.
+  -->
+  <f:entry title="ID" field="id" description="Madatory ID needed to update the correct build row in the mashup page">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="Group" field="group" description="Set a group name here to have different groupings in your report page. Leave empty if you want to have only one table">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="Column Value 1" field="columnValue1" description="Value to be filled into column number 1 of the data row">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="Column Value 2" field="columnValue2" description="Value to be filled into column number 2 of the data row">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="Column Value 3" field="columnValue3" description="Value to be filled into column number 3 of the data row">
+    <f:textbox />
+  </f:entry>
+  <f:entry title="Column Value 4" field="columnValue4" description="Value to be filled into column number 4 of the data row">
+    <f:textbox />
+  </f:entry>
+</j:jelly>

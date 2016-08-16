@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <io.crowdcode.jenkins.jassm.JassmBuilder plugin="jassm@1.0-SNAPSHOT">
+      <group></group>
+      <id>System 1</id>
+      <columnValue1>foo</columnValue1>
+      <columnValue2>bar</columnValue2>
+      <columnValue3>batz</columnValue3>
+      <columnValue4>boing</columnValue4>
+    </io.crowdcode.jenkins.jassm.JassmBuilder>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

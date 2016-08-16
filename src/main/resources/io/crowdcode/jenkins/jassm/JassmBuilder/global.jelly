@@ -1,0 +1,35 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!--
+    This Jelly script is used to produce the global configuration option.
+
+    Jenkins uses a set of tag libraries to provide uniformity in forms.
+    To determine where this tag is defined, first check the namespace URI,
+    and then look under $JENKINS/views/. For example, <f:section> is defined
+    in $JENKINS/views/lib/form/section.jelly.
+
+    It's also often useful to just check other similar scripts to see what
+    tags they use. Views are always organized according to its owner class,
+    so it should be straightforward to find them.
+  -->
+  <f:section title="Jassm Configuration">
+    <f:entry title="Output Page Headline" field="pageHeadline" description="Title to be printed on the top of the page">
+          <f:textbox />
+    </f:entry>
+    <f:entry title="Output destination path" field="outputDestination" description="Absolute directory path or drive name which is used to store the stats output.">
+      <f:textbox />
+    </f:entry>
+    <f:entry title="Column Name 1" field="columnCaption1" description="Heading to be filled over column number 1 of the table. Leave empty to skip.">
+      <f:textbox />
+    </f:entry>
+    <f:entry title="Column Name 2" field="columnCaption2" description="Heading to be filled over column number 2 of the table. Leave empty to skip.">
+      <f:textbox />
+    </f:entry>
+    <f:entry title="Column Name 3" field="columnCaption3" description="Heading to be filled over column number 3 of the table. Leave empty to skip.">
+      <f:textbox />
+    </f:entry>
+    <f:entry title="Column Name 4" field="columnCaption4" description="Heading to be filled over column number 4 of the table. Leave empty to skip.">
+      <f:textbox />
+    </f:entry>
+  </f:section>
+</j:jelly>

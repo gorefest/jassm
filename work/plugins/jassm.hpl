@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Group-Id: io.crowdcode.jenkins
+Short-Name: jassm
+Long-Name: JASSM Plugin
+Url: https://wiki.jenkins-ci.org/display/JENKINS/TODO+Plugin
+Plugin-Version: 1.0-SNAPSHOT (private-08/04/2016 17:38-marcus)
+Hudson-Version: 1.625.3
+Jenkins-Version: 1.625.3
+Plugin-Developers: Marcus Noerder-Tuitje:mnt:marcus.noerder-tuitje@cro
+ wdcode.io
+Libraries: C:\Entwicklung\jenkins-plugin\jassm\src\main\resources,C:\E
+ ntwicklung\jenkins-plugin\jassm\target\classes,C:\Users\marcus\.m2\re
+ pository\org\freemarker\freemarker\2.3.23\freemarker-2.3.23.jar
+Resource-Path: C:\Entwicklung\jenkins-plugin\jassm\src\main\webapp
+
