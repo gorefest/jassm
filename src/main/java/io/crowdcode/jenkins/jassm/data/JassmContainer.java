@@ -2,10 +2,7 @@ package io.crowdcode.jenkins.jassm.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by marcus on 26.07.2016.
@@ -18,11 +15,13 @@ public class JassmContainer implements Serializable{
     private JassmDataRow[] jassmDataRows;
 
     public JassmDataRow[] getJassmDataRows() {
-        return jassmDataRows;
+        return jassmDataRows != null ? Arrays.copyOf(jassmDataRows, jassmDataRows.length) : null;
     }
 
     public void setJassmDataRows(JassmDataRow[] jassmDataRows) {
-        this.jassmDataRows = jassmDataRows;
+        if (jassmDataRows != null) {
+            this.jassmDataRows = Arrays.copyOf(jassmDataRows, jassmDataRows.length);
+        }
     }
 
     public Map<String, List<JassmDataRow>> toGroupMap() {

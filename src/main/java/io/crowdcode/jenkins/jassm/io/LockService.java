@@ -14,6 +14,10 @@ public class LockService {
             super("Aquiring the lockfile was impossible!");
         }
 
+        public LockAquisitionFailed(String message) {
+            super(message);
+        }
+
         public LockAquisitionFailed(Throwable cause) {
             super("Aquiring the lockfile was impossible!", cause);
         }
@@ -34,6 +38,9 @@ public class LockService {
     public static final int MAX_WAIT_MILLIS = 10000;
     public static final int SLEEP_MILLIS = 250;
 
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="SWL_SLEEP_WITH_LOCK_HELD",
+            justification="The required lock is mandatory")
     public static synchronized void lock(File file) {
         File lockFile = getLockFile(file);
         Long begin = System.currentTimeMillis();
@@ -50,7 +57,9 @@ public class LockService {
             throw new LockAquisitionFailed();
         } else {
             try {
-                lockFile.createNewFile();
+                if (!lockFile.createNewFile()) {
+                    throw new LockAquisitionFailed("Lockfile creation failed!");
+                };
                 lockFile.deleteOnExit();
             } catch (IOException e) {
                 throw new LockAquisitionFailed(e);

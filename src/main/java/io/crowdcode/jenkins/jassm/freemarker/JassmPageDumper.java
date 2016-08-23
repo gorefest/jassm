@@ -31,13 +31,19 @@ public class JassmPageDumper {
             File tmpDir = tmpFile.getParentFile();
             tmpDir.deleteOnExit();
             TEMP_OUTPUT_DIRECTORY = new File(tmpDir, "jassm"+System.currentTimeMillis());
-            TEMP_OUTPUT_DIRECTORY.mkdirs();
+            if (!TEMP_OUTPUT_DIRECTORY.mkdirs()) {
+                throw new RuntimeException("Creation of temp directory "+TEMP_OUTPUT_DIRECTORY.getAbsolutePath()+" failed");
+            }
             TEMP_OUTPUT_DIRECTORY.deleteOnExit();
 
             TEMPLATE_FILE = new File(TEMP_OUTPUT_DIRECTORY,"output.ftlh");
 
             URL resource = Thread.currentThread().getContextClassLoader().getResource("output.ftlh");
+            if (resource == null) {
+                resource = JassmPageDumper.class.getClassLoader().getResource("output.ftlh");
+            }
             URI uri = resource.toURI();
+
             File f = new File(uri);
 
             FileUtils.copyFile(f, TEMPLATE_FILE);
@@ -55,6 +61,9 @@ public class JassmPageDumper {
         initialize();
     }
 
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+            value="DM_DEFAULT_ENCODING",
+            justification="Screw this.")
     public static synchronized void writeOutputFile(JassmContainer container, File destinationDirectory, String outputCaption, String columnCaption1, String columnCaption2, String columnCaption3, String columnCaption4) throws IOException, TemplateException {
         PageModel pageModel = new PageModel();
         pageModel.setHeadline(outputCaption);
@@ -71,9 +80,8 @@ public class JassmPageDumper {
         /* Merge data-model with template */
         File file = new File(destinationDirectory, "index.html");
         System.out.println(file.getAbsoluteFile());
-        Writer out = new FileWriter(file);
-        temp.process(pageModel, out);
-        // Note: Depending on what
-
+        try(Writer out = new FileWriter(file)) {
+            temp.process(pageModel, out);
+        }
     }
 }

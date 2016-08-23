@@ -22,7 +22,7 @@ public class JassmDataRow implements Serializable{
     public JassmDataRow(String group, String id, Date date, String columnValue1, String columnValue2, String columnValue3, String columnValue4) {
         this.group = group;
         this.id = id;
-        this.date = date;
+        this.date = date != null ? new Date(date.getTime()) : null;
         this.columnValue1 = columnValue1;
         this.columnValue2 = columnValue2;
         this.columnValue3 = columnValue3;
@@ -46,11 +46,11 @@ public class JassmDataRow implements Serializable{
     }
 
     public Date getDate() {
-        return date;
+        return date != null ? new Date(date.getTime()): null;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date != null ? new Date(date.getTime()) : null;
     }
 
     public String getColumnValue1() {

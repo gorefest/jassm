@@ -526,7 +526,7 @@ var forEach = function(object, block, context) {
 
 </script>
 
-<h1>${headline}</h1>
+<h1>${headline}!</h1>
 
 <table class="sortable">
     <thead>
