@@ -3,7 +3,6 @@ package io.crowdcode.jenkins.jassm.dtoservice;
 import io.crowdcode.jenkins.jassm.JassmBuilder;
 import io.crowdcode.jenkins.jassm.data.JassmDataRow;
 import io.crowdcode.jenkins.jassm.harness.DataHarness;
-import org.apache.sshd.common.kex.DH;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +22,14 @@ public class JassmDataRowDtoServiceTest {
 
     @Test
     public void convert() throws Exception {
-        JassmDataRow probe = JassmDataRowDtoService.convert(candidate);
+        JassmBuilder.VariableResolver resolver=new JassmBuilder.VariableResolver() {
+            @Override
+            public String resolve(String name) {
+                return name;
+            }
+        };
+
+        JassmDataRow probe = JassmDataRowDtoService.convert(candidate, resolver);
         assertNotNull(probe);
         assertNotNull(probe.getDate());
         assertEquals(candidate.getId(), probe.getId());

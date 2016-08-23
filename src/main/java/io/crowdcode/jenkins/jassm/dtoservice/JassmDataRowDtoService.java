@@ -10,14 +10,14 @@ import java.util.Date;
  */
 public class JassmDataRowDtoService {
 
-    public static JassmDataRow convert(JassmBuilder builder) {
+    public static JassmDataRow convert(JassmBuilder builder, JassmBuilder.VariableResolver resolver) {
         JassmDataRow row = new JassmDataRow();
         row.setId(builder.getId());
         row.setGroup(builder.getGroup());
-        row.setColumnValue1(builder.getColumnValue1());
-        row.setColumnValue2(builder.getColumnValue2());
-        row.setColumnValue3(builder.getColumnValue3());
-        row.setColumnValue4(builder.getColumnValue4());
+        row.setColumnValue1(resolver.resolve(builder.getColumnValue1()));
+        row.setColumnValue2(resolver.resolve(builder.getColumnValue2()));
+        row.setColumnValue3(resolver.resolve(builder.getColumnValue3()));
+        row.setColumnValue4(resolver.resolve(builder.getColumnValue4()));
         row.setDate(new Date());
         return row;
     }

@@ -1,5 +1,8 @@
 package io.crowdcode.jenkins.jassm;
+import com.google.inject.Binding;
+import com.google.inject.Key;
 import freemarker.template.TemplateException;
+import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.FilePath;
@@ -14,6 +17,7 @@ import io.crowdcode.jenkins.jassm.dtoservice.JassmDataRowDtoService;
 import io.crowdcode.jenkins.jassm.freemarker.JassmPageDumper;
 import io.crowdcode.jenkins.jassm.io.JassmStorage;
 import io.crowdcode.jenkins.jassm.io.LockService;
+import jenkins.model.Jenkins;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -24,6 +28,7 @@ import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 
 /**
  */
@@ -72,8 +77,31 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
         return id;
     }
 
+    public interface VariableResolver{
+        String resolve(String name);
+    }
+
     @Override
-    public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
+    public void perform(final Run<?,?> build, FilePath workspace, Launcher launcher, final TaskListener listener) {
+        final VariableResolver resolver=  new VariableResolver() {
+            @Override
+            public String resolve(String name) {
+                if (name != null && (name.trim().startsWith("%") || name.trim().startsWith("$"))) {
+                    name = name.substring(2, name.length()-1);
+                    String result = null;
+                    try {
+                        EnvVars environment = build.getEnvironment(listener);
+                        result = environment.get(name, name);
+                    } catch (InterruptedException|IOException e) {
+                        e.printStackTrace();
+                    }
+                    return result;
+                } else {
+                    return name;
+                }
+            }
+        };
+
 
         DescriptorImpl descriptor = getDescriptor();
         File outputDestination = new File(descriptor.getOutputDestination());
@@ -82,7 +110,7 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
         LockService.lock(file);
         listener.getLogger().println("Writing Statistics");
         try{
-            JassmStorage.updateRow(JassmDataRowDtoService.convert(this), datastore);
+            JassmStorage.updateRow(JassmDataRowDtoService.convert(this, resolver), datastore);
             JassmPageDumper.writeOutputFile(JassmStorage.loadDataStore(datastore), outputDestination, descriptor.outputDestination, descriptor.columnCaption1, descriptor.columnCaption2, descriptor.columnCaption3, descriptor.columnCaption4);
 
             listener.getLogger().println("JASSM has written all data to "+outputDestination.getAbsolutePath());

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <io.crowdcode.jenkins.jassm.JassmBuilder_-DescriptorImpl plugin="jassm@1.0-SNAPSHOT">
-  <pageHeadline>BOOXA!!!</pageHeadline>
+  <pageHeadline></pageHeadline>
   <columnCaption1>Environment</columnCaption1>
-  <columnCaption2>Branch</columnCaption2>
+  <columnCaption2></columnCaption2>
   <columnCaption3>URL</columnCaption3>
   <columnCaption4></columnCaption4>
   <outputDestination>C:\temp\stats\</outputDestination>
