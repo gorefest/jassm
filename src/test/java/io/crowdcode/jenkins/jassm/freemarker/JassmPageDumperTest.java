@@ -1,6 +1,5 @@
 package io.crowdcode.jenkins.jassm.freemarker;
 
-import io.crowdcode.jenkins.jassm.freemarker.JassmPageDumper;
 import io.crowdcode.jenkins.jassm.harness.DataHarness;
 import org.junit.Test;
 
@@ -23,7 +22,7 @@ public class JassmPageDumperTest {
 
     @Test
     public void testDump() throws Exception {
-        JassmPageDumper.writeOutputFile(DataHarness.c$testContainer3(), File.createTempFile("foo","bar").getParentFile(),"Test","Column1","Column2","Column3","Column4");
+        JassmPageDumper.writeOutputFile(DataHarness.c$testContainer3(), File.createTempFile("foo","bar").getParentFile(),"Test","Column1","Column2","Column3","Column4", null);
     }
 
 }

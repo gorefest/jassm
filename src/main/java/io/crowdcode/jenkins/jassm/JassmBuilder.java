@@ -111,7 +111,7 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
         listener.getLogger().println("Writing Statistics");
         try{
             JassmStorage.updateRow(JassmDataRowDtoService.convert(this, resolver), datastore);
-            JassmPageDumper.writeOutputFile(JassmStorage.loadDataStore(datastore), outputDestination, descriptor.outputDestination, descriptor.columnCaption1, descriptor.columnCaption2, descriptor.columnCaption3, descriptor.columnCaption4);
+            JassmPageDumper.writeOutputFile(JassmStorage.loadDataStore(datastore), outputDestination, descriptor.pageHeadline, descriptor.columnCaption1, descriptor.columnCaption2, descriptor.columnCaption3, descriptor.columnCaption4, getDescriptor().getTemplateName());
 
             listener.getLogger().println("JASSM has written all data to "+outputDestination.getAbsolutePath());
 
@@ -159,6 +159,7 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
         private String columnCaption4;
 
         private String outputDestination;
+        private String templateName;
 
         /**
          * In order to load the persisted global configuration, you have to 
@@ -210,6 +211,26 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
 
 
 
+        public FormValidation doCheckTemplateName(@QueryParameter String value)
+                throws IOException, ServletException {
+            if (value == null || value.trim().isEmpty()){
+                return FormValidation.ok(); // use default template
+            }else {
+                File file = new File(value);
+                if (!file.exists()) {
+                    return FormValidation.error("Please enter an existing template path");
+                } else if (file.isDirectory()) {
+                    return FormValidation.error("The entered path is a directory");
+                } else if (!file.canRead()) {
+                    return FormValidation.error("Insufficient privileges. You must be allowed to READ to the entered file");
+                } else {
+                    return FormValidation.ok();
+                }
+            }
+        }
+
+
+
 
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
             // Indicates that this builder can be used with all kinds of project types 
@@ -233,6 +254,7 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
             columnCaption3 = formData.getString("columnCaption3");
             columnCaption4 = formData.getString("columnCaption4");
             outputDestination = formData.getString("outputDestination");
+            templateName = formData.getString("templateName");
 
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
@@ -263,6 +285,10 @@ public class JassmBuilder extends Builder implements SimpleBuildStep {
 
         public String getPageHeadline() {
             return pageHeadline;
+        }
+
+        public String getTemplateName() {
+            return templateName;
         }
     }
 }

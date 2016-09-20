@@ -19,6 +19,9 @@
     <f:entry title="Output destination path" field="outputDestination" description="Absolute directory path or drive name which is used to store the stats output.">
       <f:textbox />
     </f:entry>
+    <f:entry title="Predefined template path" field="templateName" description="Absolute path to a template. Leave empty to use default template.">
+      <f:textbox />
+    </f:entry>
     <f:entry title="Column Name 1" field="columnCaption1" description="Heading to be filled over column number 1 of the table. Leave empty to skip.">
       <f:textbox />
     </f:entry>

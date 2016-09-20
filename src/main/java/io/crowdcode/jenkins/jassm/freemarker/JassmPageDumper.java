@@ -9,9 +9,6 @@ import io.crowdcode.jenkins.jassm.data.JassmContainer;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -38,18 +35,17 @@ public class JassmPageDumper {
 
             TEMPLATE_FILE = new File(TEMP_OUTPUT_DIRECTORY,"output.ftlh");
 
-            URL resource = Thread.currentThread().getContextClassLoader().getResource("output.ftlh");
+            InputStream resource = Thread.currentThread().getContextClassLoader().getResourceAsStream("output.ftlh");
+
             if (resource == null) {
-                resource = JassmPageDumper.class.getClassLoader().getResource("output.ftlh");
+                resource = JassmPageDumper.class.getClassLoader().getResourceAsStream("output.ftlh");
             }
-            URI uri = resource.toURI();
 
-            File f = new File(uri);
 
-            FileUtils.copyFile(f, TEMPLATE_FILE);
+            FileUtils.copyInputStreamToFile(resource,TEMPLATE_FILE);
 
             cfg.setDirectoryForTemplateLoading(TEMP_OUTPUT_DIRECTORY);
-        } catch (IOException | URISyntaxException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         cfg.setDefaultEncoding("UTF-8");
@@ -64,7 +60,7 @@ public class JassmPageDumper {
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(
             value="DM_DEFAULT_ENCODING",
             justification="Screw this.")
-    public static synchronized void writeOutputFile(JassmContainer container, File destinationDirectory, String outputCaption, String columnCaption1, String columnCaption2, String columnCaption3, String columnCaption4) throws IOException, TemplateException {
+    public static synchronized void writeOutputFile(JassmContainer container, File destinationDirectory, String outputCaption, String columnCaption1, String columnCaption2, String columnCaption3, String columnCaption4, String templateName) throws IOException, TemplateException {
         PageModel pageModel = new PageModel();
         pageModel.setHeadline(outputCaption);
         pageModel.setColumnCaption1(columnCaption1);
@@ -73,9 +69,15 @@ public class JassmPageDumper {
         pageModel.setColumnCaption4(columnCaption4);
         pageModel.setJassmDataRows(Arrays.asList(container.getJassmDataRows()));
 
-
-            /* Get the template (uses cache internally) */
-        Template temp = cfg.getTemplate("output.ftlh");
+        final Template temp;
+        if (templateName != null && !templateName.trim().isEmpty()) {
+            File file = new File(templateName);
+            cfg.setDirectoryForTemplateLoading(file.getParentFile());
+            temp = cfg.getTemplate(file.getName());
+        } else {
+                /* Get the template (uses cache internally) */
+            temp = cfg.getTemplate("output.ftlh");
+        }
 
         /* Merge data-model with template */
         File file = new File(destinationDirectory, "index.html");
