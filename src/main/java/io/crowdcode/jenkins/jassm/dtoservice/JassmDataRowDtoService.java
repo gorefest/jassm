@@ -12,8 +12,8 @@ public class JassmDataRowDtoService {
 
     public static JassmDataRow convert(JassmBuilder builder, JassmBuilder.VariableResolver resolver) {
         JassmDataRow row = new JassmDataRow();
-        row.setId(builder.getId());
-        row.setGroup(builder.getGroup());
+        row.setId(resolver.resolve(builder.getId()));
+        row.setGroup(resolver.resolve(builder.getGroup()));
         row.setColumnValue1(resolver.resolve(builder.getColumnValue1()));
         row.setColumnValue2(resolver.resolve(builder.getColumnValue2()));
         row.setColumnValue3(resolver.resolve(builder.getColumnValue3()));
